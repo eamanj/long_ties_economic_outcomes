@@ -46,7 +46,7 @@ process_release_geounit_data <- function(data,
 #######################################################################################
 
 data_dir <- './data/'
-release_data <- read.csv(file.path(data_dir, 'release', 'lties_country_geo_unit_release_stats_2021_11_04.csv'))
+release_data <- read.csv(file.path(data_dir, 'release', 'lties_country_geo_unit_release_stats.csv'))
 
 
 ##### Zipcode level data
@@ -258,7 +258,6 @@ df <- process_release_geounit_data(df,
 
 
 fill_var <- 'fraction_long_edges'
-control_vars <- c('mean_degree_bracket')
 control_vars <- c('mean_degree_bracket', 'population_bracket')
 cat(paste0('Control vars: ', paste(control_vars, collapse=','), '\n',
            'fill var: ', fill_var))
@@ -312,7 +311,6 @@ df <- process_release_geounit_data(df,
 
 fill_var <- 'fraction_long_edges'
 control_vars <- c('mean_degree_bracket')
-control_vars <- c('mean_degree_bracket', 'population_bracket')
 cat(paste0('Control vars: ', paste(control_vars, collapse=','), '\n',
            'fill var: ', fill_var))
 
