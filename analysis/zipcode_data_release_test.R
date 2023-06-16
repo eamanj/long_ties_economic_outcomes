@@ -46,12 +46,13 @@ process_release_geounit_data <- function(data,
 #######################################################################################
 
 data_dir <- './data/'
-release_data <- read.csv(file.path(data_dir, 'release', 'lties_country_geo_unit_release_stats.csv'))
 
 
 ##### Zipcode level data
-mx_zipcode_data <- release_data[(release_data$country=='MX') & (release_data$unit=='zipcode'),]
-us_zipcode_data <- release_data[(release_data$country=='US') & (release_data$unit=='zipcode'),]
+mx_zipcode_data <- read.csv(file.path(data_dir, 'release', 'mx_zipcode_long_ties.csv'),
+                            colClasses=c('unit_id'='character'))
+us_zipcode_data <- read.csv(file.path(data_dir, 'release', 'us_zipcode_long_ties.csv'),
+                            colClasses=c('unit_id'='character'))
 
 us_zipcode_outcomes_data <- read.csv('./data/zipcode_data.csv', colClasses=c('zipcode'='character'))
 us_zipcode_outcomes_data <- us_zipcode_outcomes_data[,c("zipcode", "income_median_household", "race_white",
@@ -68,8 +69,10 @@ mx_zipcode_data <- mx_zipcode_data[!is.na(mx_zipcode_data$population),]
 mx_zipcode_data <- mx_zipcode_data[mx_zipcode_data$population > 150, ]
 
 ##### County level data
-us_county_data <- release_data[(release_data$country=='US') & (release_data$unit=='county'),]
-mx_county_data <- release_data[(release_data$country=='MX') & (release_data$unit=='county'),]
+mx_county_data <- read.csv(file.path(data_dir, 'release', 'mx_county_long_ties.csv'),
+                            colClasses=c('unit_id'='character'))
+us_county_data <- read.csv(file.path(data_dir, 'release', 'us_county_long_ties.csv'),
+                            colClasses=c('unit_id'='character'))
 
 us_county_pop <- read.csv('./data/release/us_counties_pop.csv', colClasses=c('county'='character'))
 us_county_data <- inner_join(us_county_pop, us_county_data, by=join_by(county == unit_id))
@@ -258,7 +261,7 @@ df <- process_release_geounit_data(df,
 
 
 fill_var <- 'fraction_long_edges'
-control_vars <- c('mean_degree_bracket', 'population_bracket')
+control_vars <- c('mean_degree_bracket')#, 'population_bracket')
 cat(paste0('Control vars: ', paste(control_vars, collapse=','), '\n',
            'fill var: ', fill_var))
 
@@ -299,6 +302,11 @@ p <- ggplot() +
         legend.position="bottom") +
   coord_equal()
 p
+
+pdf_width <- 9
+pdf_height <- 7
+ggsave(filename = paste0("~/research/long_range_ties/results/zipcode_paper/comments_180d/", fill_var, "_county_map_release_data.pdf"), plot = p,
+       width = pdf_width, height = pdf_height, units= "in")
 
 ################################### MAP OF MX COUNTIES WITH FRAC LONG TIES #####################################
 df <- mx_county_data
@@ -350,3 +358,8 @@ p <- ggplot() +
         legend.position="bottom") +
   coord_equal()
 p
+
+pdf_width <- 9
+pdf_height <- 7
+ggsave(filename = paste0("~/research/long_range_ties/results/zipcode_paper/comments_180d/", fill_var, "_municipality_map_release_data.pdf"), plot = p,
+       width = pdf_width, height = pdf_height, units= "in")
