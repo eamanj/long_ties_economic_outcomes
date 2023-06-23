@@ -47,7 +47,18 @@ process_release_geounit_data <- function(data,
 
 data_dir <- './data/'
 
-
+#####
+# Note on data:
+# The zipcode and county level data on frequency of long ties can be downloaded at the following link:
+# https://socialmediaarchive.org/record/27
+# You can find the following files at the above link:
+# mx_zipcode_long_ties.csv, us_zipcode_long_ties.csv, mx_county_long_ties.csv, us_county_long_ties.csv
+#
+# The outcome data below is not released, but can be easily constructed using third party sources, like
+# the ACS from the census bureau or the opportunity insights page: https://opportunityinsights.org/
+# The outcome data mainly contains the following information per geo-unit: population, median income,
+# racial composition, unemployment rate and the probability of social upward mobility
+#
 ##### Zipcode level data
 mx_zipcode_data <- read.csv(file.path(data_dir, 'release', 'mx_zipcode_long_ties.csv'),
                             colClasses=c('unit_id'='character'))
